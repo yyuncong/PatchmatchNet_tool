@@ -100,13 +100,13 @@ def read_cameras_binary(path: str) -> Dict[int, Camera]:
     model_cameras: Dict[int, Camera] = {}
     with open(path, "rb") as fid:
         num_cameras = read_next_bytes(fid, 8, "Q")[0]
-        print("num of cameras")
-        print(num_cameras)
+        # print("num of cameras")
+        # print(num_cameras)
         for camera_line_index in range(num_cameras):
             camera_properties = read_next_bytes(fid, 24, "iiQQ")
             cam_id = camera_properties[0]
-            print("camera id")
-            print(cam_id)
+            # print("camera id")
+            # print(cam_id)
 
             model_id = camera_properties[1]
             model_name = CAMERA_MODEL_IDS[camera_properties[1]].model_name
@@ -222,13 +222,13 @@ def read_points3d_binary(path: str) -> Dict[int, Point3D]:
 
 def read_model(path: str, ext: str) -> Tuple[Dict[int, Camera], List[Image], Dict[int, Point3D]]:
     if ext == ".txt":
-        model_cameras = read_cameras_text(os.path.join(path, "cameras" + ext))
-        model_images = read_images_text(os.path.join(path, "images" + ext))
-        model_points_3d = read_points_3d_text(os.path.join(path, "points3D") + ext)
+        model_cameras = read_cameras_binary(os.path.join(path, "0", "cameras" + ext))
+        model_images = read_images_binary(os.path.join(path, "0", "images" + ext))
+        model_points_3d = read_points3d_binary(os.path.join(path, "0", "points3D") + ext)
     else:
-        model_cameras = read_cameras_binary(os.path.join(path, "cameras" + ext))
-        model_images = read_images_binary(os.path.join(path, "images" + ext))
-        model_points_3d = read_points3d_binary(os.path.join(path, "points3D") + ext)
+        model_cameras = read_cameras_binary(os.path.join(path, "0", "cameras" + ext))
+        model_images = read_images_binary(os.path.join(path, "0", "images" + ext))
+        model_points_3d = read_points3d_binary(os.path.join(path, "0", "points3D") + ext)
     return model_cameras, model_images, model_points_3d
 
 
@@ -303,7 +303,7 @@ if __name__ == "__main__":
             [0, 0, 1]
         ])
         intrinsic[camera_id] = i
-    print("intrinsic[1]\n", intrinsic[1], end="\n\n")
+    # print("intrinsic[1]\n", intrinsic[1], end="\n\n")
 
     # extrinsic
     extrinsic: List[np.ndarray] = []
@@ -313,7 +313,7 @@ if __name__ == "__main__":
         e[:3, 3] = images[i].tvec
         e[3, 3] = 1
         extrinsic.append(e)
-    print("extrinsic[0]\n", extrinsic[0], end="\n\n")
+    # print("extrinsic[0]\n", extrinsic[0], end="\n\n")
 
     # depth range and interval
     depth_ranges: List[Tuple[float, float]] = []
@@ -331,7 +331,7 @@ if __name__ == "__main__":
         depth_max = zs_sorted[int(len(zs) * .99)]
 
         depth_ranges.append((depth_min, depth_max))
-    print("depth_ranges[0]\n", depth_ranges[0], end="\n\n")
+    # print("depth_ranges[0]\n", depth_ranges[0], end="\n\n")
 
     def calc_score(ind1: int, ind2: int) -> float:
         id_i = images[ind1].point3d_ids
@@ -370,7 +370,7 @@ if __name__ == "__main__":
     for i in range(num_images):
         sorted_score = np.argsort(score[i])[::-1]
         view_sel.append([(k, score[i, k]) for k in sorted_score[:args.num_src_images]])
-    print("view_sel[0]\n", view_sel[0], end="\n\n")
+    # print("view_sel[0]\n", view_sel[0], end="\n\n")
 
     # write
     os.makedirs(cam_dir, exist_ok=True)
