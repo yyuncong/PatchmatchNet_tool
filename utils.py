@@ -1,7 +1,7 @@
 import numpy as np
 import torchvision.utils
 import torch
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 from typing import Any, Callable, Union, Dict
 
 
@@ -91,51 +91,51 @@ def to_cuda(args: Any) -> Union[str, torch.Tensor]:
         raise NotImplementedError("invalid input type {} for to_cuda".format(type(args)))
 
 
-def save_scalars(logger: SummaryWriter, mode: str, scalar_dict: Dict[str, Any], global_step: int) -> None:
-    """Log values stored in the scalar dictionary
+# def save_scalars(logger: SummaryWriter, mode: str, scalar_dict: Dict[str, Any], global_step: int) -> None:
+#     """Log values stored in the scalar dictionary
+#
+#     Args:
+#         logger: tensorboard summary writer
+#         mode: mode name used in writing summaries
+#         scalar_dict: python dictionary stores the key and value pairs to be recorded
+#         global_step: step index where the logger should write
+#     """
+#     scalar_dict = tensor2float(scalar_dict)
+#     for key, value in scalar_dict.items():
+#         if not isinstance(value, (list, tuple)):
+#             name = "{}/{}".format(mode, key)
+#             logger.add_scalar(name, value, global_step)
+#         else:
+#             for idx in range(len(value)):
+#                 name = "{}/{}_{}".format(mode, key, idx)
+#                 logger.add_scalar(name, value[idx], global_step)
 
-    Args:
-        logger: tensorboard summary writer
-        mode: mode name used in writing summaries
-        scalar_dict: python dictionary stores the key and value pairs to be recorded
-        global_step: step index where the logger should write
-    """
-    scalar_dict = tensor2float(scalar_dict)
-    for key, value in scalar_dict.items():
-        if not isinstance(value, (list, tuple)):
-            name = "{}/{}".format(mode, key)
-            logger.add_scalar(name, value, global_step)
-        else:
-            for idx in range(len(value)):
-                name = "{}/{}_{}".format(mode, key, idx)
-                logger.add_scalar(name, value[idx], global_step)
 
-
-def save_images(logger: SummaryWriter, mode: str, images: Dict[str, np.ndarray], global_step: int) -> None:
-    """Log images stored in the image dictionary
-
-    Args:
-        logger: tensorboard summary writer
-        mode: mode name used in writing summaries
-        images: python dictionary stores the key and image pairs to be recorded
-        global_step: step index where the logger should write
-    """
-    def preprocess(image_name, image):
-        if not (len(image.shape) == 3 or len(image.shape) == 4):
-            raise NotImplementedError("invalid img shape {}:{} in save_images".format(image_name, image.shape))
-        if len(image.shape) == 3:
-            image = image[:, np.newaxis, :, :]
-        image = torch.from_numpy(image[:1])
-        return torchvision.utils.make_grid(image, padding=0, nrow=1, normalize=True, scale_each=True)
-
-    for key, value in images.items():
-        if not isinstance(value, (list, tuple)):
-            name = "{}/{}".format(mode, key)
-            logger.add_image(name, preprocess(name, value), global_step)
-        else:
-            for idx in range(len(value)):
-                name = "{}/{}_{}".format(mode, key, idx)
-                logger.add_image(name, preprocess(name, value[idx]), global_step)
+# def save_images(logger: SummaryWriter, mode: str, images: Dict[str, np.ndarray], global_step: int) -> None:
+#     """Log images stored in the image dictionary
+#
+#     Args:
+#         logger: tensorboard summary writer
+#         mode: mode name used in writing summaries
+#         images: python dictionary stores the key and image pairs to be recorded
+#         global_step: step index where the logger should write
+#     """
+#     def preprocess(image_name, image):
+#         if not (len(image.shape) == 3 or len(image.shape) == 4):
+#             raise NotImplementedError("invalid img shape {}:{} in save_images".format(image_name, image.shape))
+#         if len(image.shape) == 3:
+#             image = image[:, np.newaxis, :, :]
+#         image = torch.from_numpy(image[:1])
+#         return torchvision.utils.make_grid(image, padding=0, nrow=1, normalize=True, scale_each=True)
+#
+#     for key, value in images.items():
+#         if not isinstance(value, (list, tuple)):
+#             name = "{}/{}".format(mode, key)
+#             logger.add_image(name, preprocess(name, value), global_step)
+#         else:
+#             for idx in range(len(value)):
+#                 name = "{}/{}_{}".format(mode, key, idx)
+#                 logger.add_image(name, preprocess(name, value[idx]), global_step)
 
 
 class DictAverageMeter:
