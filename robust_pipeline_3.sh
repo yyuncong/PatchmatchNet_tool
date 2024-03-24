@@ -12,8 +12,9 @@ fps=4
 
 
 for video in $VIDEOS; do
+    COLMAP_PATH="${DATASET_PATH}/${video}/example"
     ######################## COLMAP to PatchmatchNet format ######################
-    python colmap_input.py --input_folder $COLMAP_PATH
+    python colmap_input.py --input_folder $COLMAP_PATH --convert_format
 
     ######################## Broadcast COLMAP results to all scenes ########################
     python scripts/colmap_broadcasting.py --video $video --dataset_path $DATASET_PATH
