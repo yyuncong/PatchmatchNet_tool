@@ -10,18 +10,8 @@ flame_steak
 "
 fps=4
 
-######################## Videos to Frames ########################
-bash scripts/dynerf_frame_extraction.sh -d $DATASET_PATH -w $IMAGE_WIDTH -f $fps
 
 for video in $VIDEOS; do
-    ######################## Frames to Scenes Format ########################
-    python scripts/scene_frames_preparing.py --video $video --dataset_path $DATASET_PATH
-
-    ######################## Pick a scene as an example for COLMAP ########################
-    python scripts/example_scene_preparing.py --video $video --dataset_path $DATASET_PATH
-    COLMAP_PATH="${DATASET_PATH}/${video}/example"
-    bash scripts/colmap_preprocessing.sh -d $COLMAP_PATH -w $IMAGE_WIDTH
-
     ######################## COLMAP to PatchmatchNet format ######################
     python colmap_input.py --input_folder $COLMAP_PATH --convert_format
 
