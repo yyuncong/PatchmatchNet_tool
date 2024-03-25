@@ -2,6 +2,7 @@ import os
 from os.path import join as pjoin
 import glob
 import argparse
+from PIL import Image
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -32,6 +33,14 @@ if __name__ == '__main__':
             old_path = pjoin(old_frame_path, cam_idx, img_filename)
             os.system(f'cp {old_path} {new_save_path}')
             frame_count += 1
+
+            # sanity check
+            try:
+                img = Image.open(old_frame_path)
+            except Exception as e:
+                print(e)
+                print(f'Error in {old_frame_path}')
+
         print(f'{cam_idx} selected {frame_count-1} frames')
 
     # copy frames to scans
