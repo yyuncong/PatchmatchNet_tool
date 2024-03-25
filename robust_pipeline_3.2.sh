@@ -12,13 +12,6 @@ fps=4
 
 
 for video in $VIDEOS; do
-    COLMAP_PATH="${DATASET_PATH}/${video}/example"
-    ######################## COLMAP to PatchmatchNet format ######################
-    python colmap_input.py --input_folder $COLMAP_PATH --convert_format
-
-    ######################## Broadcast COLMAP results to all scenes ########################
-    python scripts/colmap_broadcasting.py --video $video --dataset_path $DATASET_PATH
-
     ######################## Scene to Depth ########################
     num_views=$(ls $DATASET_PATH/$video/cam*.mp4 | wc -l)
     for scene in $(ls $DATASET_PATH/$video/scans); do
@@ -29,12 +22,12 @@ for video in $VIDEOS; do
 
         # skip the already estimated scene
         # remove if necessary
-        DEPTH_PATH = "${SCENE_PATH}/depth_est"
-        CONFIDENCE_PATH = "${SCENE_PATH}/confidence"
+        DEPTH_PATH="${SCENE_PATH}/depth_est"
+        CONFIDENCE_PATH="${SCENE_PATH}/confidence"
         # if these two paths exist
         if [ -d $DEPTH_PATH ] && [ -d $CONFIDENCE_PATH ]; then
-            n_depth = $(ls $DEPTH_PATH | wc -l)
-            n_confidence = $(ls $CONFIDENCE_PATH | wc -l)
+            n_depth=$(ls $DEPTH_PATH | wc -l)
+            n_confidence=$(ls $CONFIDENCE_PATH | wc -l)
             # if the number of depth maps and confidence maps all equals to the number of views
             if [ $n_depth -eq $num_views ] && [ $n_confidence -eq $num_views ]; then
               echo "Depth and confidence maps already exist: $SCENE_PATH"
