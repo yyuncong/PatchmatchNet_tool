@@ -1,12 +1,9 @@
-DATASET_PATH="../dataset/neural_3d_video"
+DATASET_PATH="../dataset/enerf"
 IMAGE_WIDTH=1600
 VIDEOS="
-coffee_martini
-sear_steak
-cook_spinach
-cut_roasted_beef
-flame_salmon_1
-flame_steak
+actor1_4
+actor2_3
+actor5_6
 "
 fps=4
 
