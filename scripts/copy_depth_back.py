@@ -17,6 +17,7 @@ if __name__ == '__main__':
     camera_list = os.listdir(frame_dir)
 
     for frame_id in frame_list:
+        print(f'copying: {video}/{frame_id}')
         depth_dir = pjoin(scan_dir, frame_id, 'depth_est')
         depth_map_list = os.listdir(depth_dir)
         for i, depth_map in enumerate(depth_map_list):
