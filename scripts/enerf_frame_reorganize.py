@@ -36,10 +36,10 @@ if __name__ == '__main__':
 
             # sanity check
             try:
-                img = Image.open(old_frame_path)
+                img = Image.open(old_path)
             except Exception as e:
                 print(e)
-                print(f'Error in {old_frame_path}')
+                print(f'Error in {old_path}')
 
         print(f'{cam_idx} selected {frame_count-1} frames')
 
