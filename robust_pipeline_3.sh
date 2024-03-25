@@ -26,6 +26,22 @@ for video in $VIDEOS; do
         CHECKPOINT_FILE="./checkpoints/params_000007.ckpt"
         image_max_dim=$IMAGE_WIDTH
         DYNERF_TESTING=$SCENE_PATH
+
+        # skip the already estimated scene
+        # remove if necessary
+        DEPTH_PATH = "${SCENE_PATH}/depth_est"
+        CONFIDENCE_PATH = "${SCENE_PATH}/confidence"
+        # if these two paths exist
+        if [ -d $DEPTH_PATH ] && [ -d $CONFIDENCE_PATH ]; then
+            n_depth = $(ls $DEPTH_PATH | wc -l)
+            n_confidence = $(ls $CONFIDENCE_PATH | wc -l)
+            # if the number of depth maps and confidence maps all equals to the number of views
+            if [ $n_depth -eq $num_views ] && [ $n_confidence -eq $num_views ]; then
+              echo "Depth and confidence maps already exist: $SCENE_PATH"
+              continue
+            fi
+        fi
+
         python eval.py --input_folder=$DYNERF_TESTING --output_folder=$DYNERF_TESTING --output_type depth \
         --checkpoint_path $CHECKPOINT_FILE --num_views $num_views --image_max_dim $image_max_dim --geo_mask_thres 3 --photo_thres 0.8 "$@"
     done
