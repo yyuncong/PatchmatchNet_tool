@@ -41,3 +41,4 @@ num_frames = len(frame_names)
 example_frame_name = frame_names[len(frame_names)//2]
 example_frame_folder = f'{scans_dir}/{example_frame_name}'
 os.system(f'cp -r {example_frame_folder}/* {example_dir}')
+print(f'video: {video}, example frame: {example_frame_folder}')
