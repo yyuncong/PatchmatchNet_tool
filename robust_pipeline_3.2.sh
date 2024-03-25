@@ -10,7 +10,7 @@ fps=4
 
 for video in $VIDEOS; do
     ######################## Scene to Depth ########################
-    num_views=$(ls $DATASET_PATH/$video/cam*.mp4 | wc -l)
+    num_views=$(ls $DATASET_PATH/$video/frames/cam* | wc -l)
     for scene in $(ls $DATASET_PATH/$video/scans); do
         SCENE_PATH="${DATASET_PATH}/${video}/scans/${scene}"
         CHECKPOINT_FILE="./checkpoints/params_000007.ckpt"
